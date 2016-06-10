@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Chi-squared goodness of fit\n#' @usage chi.goodness(x, p)\n#' @keywords chi-squared goodness of fit\n#' @description Calculate the chi-squared goodness of fit value from a random variable and a vector with the probabilities for the outcome for the variable.\n#' @param x is a categorical variable. It has to be numeric\n#' @param p is the probability of all outcomes of x. If p is not given, the outcome has uniform probability. It has to be numeric\n#' @return Returns the chi-squared goodness of fit value.\n#' @author Tobias Mortensen \\cr\n#' Department of mathematics and computer science (IMADA) \\cr\n#' University of southern Denmark, Odense \\cr\n#' \\email{tomor14@student.sdu.dk} \\cr\n#' @examples chi.goodness(x=c(1,3,4,1,2),p=c(.2,.3,.1,.2,.2))\n\nchi.goodness <- function(x,p){\n  if(missing(x)){\n    stop(\"x is missing\")\n  }\n  if(!is.numeric(x)){\n    stop(\"x has to be numeric\")\n  }\n  if(missing(p)){\n    e <- 1/length(x)*sum(x) # if p not given, the expected probability is uniform\n  }\n  if(!missing(p)){\n    if(length(x) != length(p) ){\n      if(length(p) != 1){\n        stop(\"the length of x must be the same as the length of p, or p must be uniform\")\n      }\n    }\n    e <- p*sum(x) # the number of expected values\n  }\n\n  chi <- sum((((x-e)^2)/e)) # chi-squared statistic\n  return(chi)\n}\n",
+    "created" : 1465416027413.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "901541585",
+    "id" : "95D09BD3",
+    "lastKnownWriteTime" : 1465511903,
+    "path" : "~/Documents/Exam/R/chi.goodness.R",
+    "project_path" : "R/chi.goodness.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

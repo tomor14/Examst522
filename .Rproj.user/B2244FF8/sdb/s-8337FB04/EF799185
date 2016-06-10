@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Markov Chain simulation\n#' @usage MC.sim(p, k, n)\n#' @keywords Markov Chain stationary distribution state\n#' @description Simulate the stationary discrete Markov Chain distribution.\n#' @param p is the probability matrix for the Markov Chain. p has to be a n x n matrix.\n#' @param k is the initial state.\n#' @param n is number af steps to be simulated.\n#' @return Returns the stationary probabilities for each state.\n#' @author Tobias Mortensen \\cr\n#' Department of mathematics and computer science (IMADA) \\cr\n#' University of southern Denmark, Odense \\cr\n#' \\email{tomor14@student.sdu.dk} \\cr\n#' @examples MC.sim(p=matrix(c(.6,.4,.4,.6), ncol=2), k=2, n=1000)\n\nMC.sim <- function(p, k, n){\n  if(missing(p)){\n    stop(\"p is missing\")\n  }\n  if(missing(k)){\n    stop(\"k is missing\")\n  }\n  if(k != as.integer(k) || k < 0){\n    stop(\"n has to be a integer\")\n  }\n  if(missing(n)){\n    stop(\"n is missing\")\n  }\n  if(n != as.integer(n) || n < 1){\n    stop(\"n has to be a positive integer\")\n  }\n  if(!is.matrix(p)){\n    stop(\"p has to be a matrix\")\n  }\n  state <- rep(0,length(p[,1]))\n  state[k] <- 1 # initial state\n  if(n > 0){ # if we have to go some steps\n    for(i in 1:n){\n      state <- state%*%p # probability for the new state\n    }\n  }\n  return(state)\n}\n",
+    "created" : 1465417442130.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1702979023",
+    "id" : "EF799185",
+    "lastKnownWriteTime" : 1465516044,
+    "path" : "~/Documents/Exam/R/MC.sim.R",
+    "project_path" : "R/MC.sim.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

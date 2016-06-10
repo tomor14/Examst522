@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Linear regression model\n#' @usage density.plot(x, n, method, from, to)\n#' @keywords density plot naive kernel\n#' @description Use the density.estimate() and plot the density function.\n#' @param x is a numeric variable.\n#' @param n is the number of points to the plot. n has to be a positive integer.\n#' @param method is either the naive estimator or the Gaussian kernel estimator. The default is the naive estimator.\n#' @param from is the point, you are plotting from.\n#' @param to is the point, you are plotting to.\n#' @return The function gives a plot of the density, either naive or Gaussian kernel.\n#' @author Tobias Mortensen \\cr\n#' Department of mathematics and computer science (IMADA) \\cr\n#' University of southern Denmark, Odense \\cr\n#' \\email{tomor14@student.sdu.dk} \\cr\n#' @examples lin.model(cars$dist~cars$speed)\n\nlin.model <- function(formula){\n  Y <- eval(as.name(all.vars(formula)[1])) # the dependent variable\n  X <- all.vars(formula)[2:length(all.vars(formula))] # the predictors\n  f <- unlist(strsplit(X, \" \")) # split the predictors\n  W <- c()\n  for(i in 1:length(f)){\n    q <- as.name(f[i])\n    W <- append(W, eval(as.name(f[i])))\n  }\n\n  M <- matrix(c(rep(1,length(Y)), W), ncol=length(f)+1)\n\n  n <- dim(M)[1]\n  p <- dim(M)[2]-1\n\n  B <- solve(t(M)%*%M)%*%(t(M)%*%Y) # beta\n  Yhat <- M%*%B # estimated Y\n  residual <- Y-Yhat # residuals\n  RSE <- sd(residual) # residuals standard error\n  RSS <- sum(residual^2) # residuals sum of squares\n  SST <- sum((Y-mean(Y))^2) # total corrected sum of squares\n  R2 <- 1-RSS/SST # R^2\n  R2adj <- 1-(RSS/(n-p-1))/(SST/(n-1)) # ajusted R^2\n  SSreg <- sum((Yhat-mean(Y))^2) # regression sum of squares\n  Fstat <- (SSreg/p)/(RSS/(n-1-p)) # f-statistic\n  df <- n-p-1 # degrees of freedom\n  pval <- 1-pf(Fstat, p, n-p-1) # p-values\n  EV <- RSS/(n-p-1) # error variance\n  SE <- sqrt(diag(EV*solve(t(M)%*%M)))  # standard error\n  tVal <- B/SE # t-values\n  pr <- 2*(1-pt(abs(tVal), df)) # p-values\n\n  print(list(\"Residuales\" = data.frame(\"Min\" = mean(residual), \"1st qu\" = quantile(residual, .25), \"Median\" = quantile(residual, .5), \"3st qu\" = quantile(residual, .75), \"Max\" = max(residual), row.names=\" \"),\n            \"Coefficints\" = data.frame(\"Estimate\" = B, \"Standard error\" = SE, \"t value\" = tVal, \"Pr(<|t|)\" = pr)))\n  cat(\"Residual standard error: \", RSE, \"on\", df, \"degrees of freedom \\n\")\n  cat(\"Multiple R-squared: \", R2, \"Adjusted R-squares: \", R2adj, \"\\n\")\n  cat(\"F-statistic: \", Fstat, \"on\", p, \"and\", df, \"df\", \"p-value: \", pval)\n}\n\n",
+    "created" : 1465420217733.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "969002483",
+    "id" : "77054C0E",
+    "lastKnownWriteTime" : 1465516044,
+    "path" : "~/Documents/Exam/R/lin.model.R",
+    "project_path" : "R/lin.model.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Bootstrap\n#' @usage bootstrap(n,x,y)\n#' @keywords bootstrap correlation\n#' @description Run a bootstrap for two random variables and estimate the correlation between them.\n#' @param n is a positive integer of bootstrap replicates.\n#' @param x is the first variable.\n#' @param y is the second variable. The length of y has to be the same as the length of x.\n#' @return Returns a list containing: correlation between the variables x and y, the bootstrap estimation of the correlation, the bootstrap estimation of the standard error, the bias, and the confidence interval.\n#' @author Tobias Mortensen \\cr\n#' Department of mathematics and computer science (IMADA) \\cr\n#' University of southern Denmark, Odense \\cr\n#' \\email{tomor14@student.sdu.dk} \\cr\n#' @examples bootstrap(n=1000, x=cars$speed, y=cars$dist)\n\n\nbootstrap <- function(n, x, y){\n  if(n!=as.integer(n) || n < 1){\n    stop(\"n has to be a positve integer\")\n  }\n  if(length(x) != length(y)){\n    stop(\"The length of x differs from the length of y\")\n  }\n  if(!is.numeric(x) || !is.numeric(y)){\n    stop(\"x and y have to be numeric\")\n  }\n  Data <- rbind(x, y) # matrix containing data for both variables\n  corr <- rep(0, n)\n  for(j in 1:n){\n    for(i in 1:length(x)){ # make the resample the same size as the original sample\n      r <- sample(1:length(x), length(x), replace=T)\n      Data[r]\n    }\n    Data\n    Y <- Data[,r]\n    corr[j] <- cor(Y[1,],Y[2,])\n  }\n  co <- cor(Data[1,],Data[2,]) # correlation between the two variables\n  bootcorr <- mean(corr) # the bootstrap estimate of the correlation\n  SE <- sd(corr) # standard error\n  bias <- bootcorr-cor(Data[1,],Data[2,]) # bias\n  CImin <- bootcorr-SE*1.96 # the start point of the confidence interval\n  CImax <- bootcorr+SE*1.96 # the end point of the confidence interval\n  hist(corr,  breaks=length(seq(from=min(corr), to=max(corr), by=.02)))\n  abline(v=CImin, col=\"red\")\n  abline(v=CImax, col=\"red\")\n  return(list(\"Correlation \" = co, \"Bootstrap estimation correlation\" = bootcorr, \"Standard error\" = SE, \"Bias \" = bias, \"Confidence interval\" = c(CImin,CImax)))\n}\n\n",
+    "created" : 1465399674381.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "735496552",
+    "id" : "37500AED",
+    "lastKnownWriteTime" : 1465514564,
+    "path" : "~/Documents/Exam/R/bootstrap.R",
+    "project_path" : "R/bootstrap.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

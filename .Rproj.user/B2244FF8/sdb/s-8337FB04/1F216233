@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Buffons needle\n#' @usage buffons.needle(N,l,d)\n#' @keywords buffon needle\n#' @description Estimating pi by simulation Buffons experiment.\n#' @param N is number of needles to be thrown. N has to be a positive integer.\n#' @param l is the length of the needles. the length has to be positive and numeric.\n#' @param d is the distance between the lines on the floor. The distance has to be positive and numeric.\n#' @return Returns the estimated value of pi by Buffons experiment.\n#' @author Tobias Mortensen \\cr\n#' Department of mathematics and computer science (IMADA) \\cr\n#' University of southern Denmark, Odense \\cr\n#' \\email{tomor14@student.sdu.dk} \\cr\n#' @examples buffons.needle(N=1000, l=1, d=1)\n\nbuffons.needle <- function(N, l, d){\n  if(N!=as.integer(N) || N < 1){\n    stop(\"N has to be a positve integer\")\n  }\n  if(!is.numeric(l) || l <= 0){\n    stop(\"l has to be positve and numeric\")\n  }\n  if(!is.numeric(d) || d <= 0){\n    stop(\"d has to be positve and numeric\")\n  }\n  hit <- 0\n  x <- runif(N,0,d) # the position of the start point of the needle\n  y <- runif(N,0,2*pi) # the angle between the x-axis and the needle\n\n  for(i in 1:N){\n    if(y[i] <= pi/2 || y[i] >= 3/2*pi){ # if the end point of the needle is in 1st or 4th quadrant\n      if(x[i]+sin(y[i])*l >= d || x[i]+sin(y[i])*l <= 0){\n        hit <- hit+1\n      }\n    }\n    else{ # if the end point of the needle is in 2nd or 3rd quadrant\n      if(x[i]+sin(pi-y[i])*l >= d || x[i]+sin(pi-y[i])*l <= 0){\n        hit <- hit+1\n      }\n    }\n  }\n  l <- list(\"probability of hit:\"=hit/N, \"pi: \"=2*l*N/(d*hit))\n  return(l)\n}\n\n",
+    "created" : 1465413803738.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2907710568",
+    "id" : "1F216233",
+    "lastKnownWriteTime" : 1465514564,
+    "path" : "~/Documents/Exam/R/buffons.needle.R",
+    "project_path" : "R/buffons.needle.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
